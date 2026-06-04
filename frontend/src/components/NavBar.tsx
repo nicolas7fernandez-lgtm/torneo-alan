@@ -6,6 +6,7 @@ interface Props {
 }
 
 const TABS: { id: Sport; label: string; emoji: string }[] = [
+  { id: 'home', label: 'Inicio', emoji: '🏆' },
   { id: 'basketball', label: 'Básquet', emoji: '🏀' },
   { id: 'squash', label: 'Squash', emoji: '🎾' },
   { id: 'aoe', label: 'AoE', emoji: '⚔️' },
@@ -26,8 +27,8 @@ export default function NavBar({ active, onChange }: Props) {
                 : 'text-gray-500 active:text-gray-300'
             }`}
           >
-            <span className="text-2xl leading-none">{tab.emoji}</span>
-            <span className="text-[10px] font-medium">{tab.label}</span>
+            <span className="text-xl leading-none">{tab.emoji}</span>
+            <span className="text-[9px] font-medium">{tab.label}</span>
           </button>
         ))}
       </div>

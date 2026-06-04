@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import NavBar from './components/NavBar';
+import Home from './components/Home';
 import Basketball from './components/Basketball';
 import Squash from './components/Squash';
 import AgeOfEmpires from './components/AgeOfEmpires';
@@ -7,6 +8,7 @@ import PingPong from './components/PingPong';
 import type { Sport } from './types';
 
 const VIEWS: Record<Sport, React.ReactElement> = {
+  home: <Home />,
   basketball: <Basketball />,
   squash: <Squash />,
   aoe: <AgeOfEmpires />,
@@ -14,7 +16,7 @@ const VIEWS: Record<Sport, React.ReactElement> = {
 };
 
 export default function App() {
-  const [sport, setSport] = useState<Sport>('basketball');
+  const [sport, setSport] = useState<Sport>('home');
 
   return (
     <div className="min-h-screen bg-gray-950 text-white">

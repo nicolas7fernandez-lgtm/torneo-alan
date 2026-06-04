@@ -34,5 +34,5 @@ export interface AllScores {
   pingpong: PingPongData;
 }
 
-export type Sport = 'basketball' | 'squash' | 'aoe' | 'pingpong';
+export type Sport = 'home' | 'basketball' | 'squash' | 'aoe' | 'pingpong';
 export type Player = 'nico' | 'alan';
