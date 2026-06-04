@@ -1,22 +1,22 @@
 import { db, doc, updateDoc, increment } from '../lib/firebase';
 import { useSquash } from '../hooks/useScores';
-import ScoreButton from './ScoreButton';
 import type { Player } from '../types';
 
 async function addPoint(player: Player) {
-  await updateDoc(doc(db, 'scores', 'squash'), {
-    [`fechas.${player}`]: increment(1),
-  });
+  await updateDoc(doc(db, 'scores', 'squash'), { [`fechas.${player}`]: increment(1) });
+}
+
+async function removePoint(player: Player, current: number) {
+  if (current <= 0) return;
+  await updateDoc(doc(db, 'scores', 'squash'), { [`fechas.${player}`]: increment(-1) });
 }
 
 export default function Squash() {
   const data = useSquash();
   const leader =
-    data.fechas.nico > data.fechas.alan
-      ? 'Nico lidera'
-      : data.fechas.alan > data.fechas.nico
-      ? 'Alan lidera'
-      : 'Empate';
+    data.fechas.nico > data.fechas.alan ? 'Nico lidera'
+    : data.fechas.alan > data.fechas.nico ? 'Alan lidera'
+    : 'Empate';
 
   return (
     <div className="space-y-4 p-4">
@@ -39,8 +39,14 @@ export default function Squash() {
       </div>
 
       <div className="flex gap-3">
-        <ScoreButton label="+1 Nico" onClick={() => addPoint('nico')} color="blue" />
-        <ScoreButton label="+1 Alan" onClick={() => addPoint('alan')} color="red" />
+        <div className="flex flex-col gap-1 flex-1">
+          <button onClick={() => addPoint('nico')} className="w-full py-4 rounded-2xl bg-blue-600 text-white font-bold text-lg active:scale-95 transition-transform">+1 Nico</button>
+          <button onClick={() => removePoint('nico', data.fechas.nico)} className="w-full py-2 rounded-xl bg-gray-700 text-gray-400 text-sm active:bg-gray-600 active:scale-95 transition-transform">−1 Nico</button>
+        </div>
+        <div className="flex flex-col gap-1 flex-1">
+          <button onClick={() => addPoint('alan')} className="w-full py-4 rounded-2xl bg-red-600 text-white font-bold text-lg active:scale-95 transition-transform">+1 Alan</button>
+          <button onClick={() => removePoint('alan', data.fechas.alan)} className="w-full py-2 rounded-xl bg-gray-700 text-gray-400 text-sm active:bg-gray-600 active:scale-95 transition-transform">−1 Alan</button>
+        </div>
       </div>
     </div>
   );

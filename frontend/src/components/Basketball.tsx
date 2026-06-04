@@ -1,27 +1,27 @@
 import { db, doc, updateDoc } from '../lib/firebase';
 import { useBasketball } from '../hooks/useScores';
-import ScoreButton from './ScoreButton';
 import type { Player } from '../types';
 
-const FECHAS_PER_TORNEO = 7;
+const PARTIDOS_PER_FECHA = 7;  // partidos ganados → 1 fecha point
+const FECHAS_PER_TORNEO = 10;  // fecha points → 1 torneo point
 
-async function addFecha(player: Player, data: ReturnType<typeof useBasketball>) {
+async function addPartido(player: Player, data: ReturnType<typeof useBasketball>) {
   const ref = doc(db, 'scores', 'basketball');
   const newFecha = { ...data.fechaActual, [player]: data.fechaActual[player] + 1 };
   const newTorneoActual = { ...data.torneoActual };
   const newTorneosPrevios = { ...data.torneosPrevios };
 
-  if (newFecha[player] >= FECHAS_PER_TORNEO) {
-    // Award torneo point
-    newTorneosPrevios[player] += 1;
-    newTorneoActual.nico = 0;
-    newTorneoActual.alan = 0;
-    newFecha.nico = 0;
-    newFecha.alan = 0;
-    newFecha.number += 1;
-  } else {
+  if (newFecha[player] >= PARTIDOS_PER_FECHA) {
+    // 7 partidos → 1 fecha point
     newTorneoActual[player] += 1;
-    newFecha.number = data.fechaActual.number;
+    newFecha[player] = 0;
+
+    if (newTorneoActual[player] >= FECHAS_PER_TORNEO) {
+      // 10 fechas → 1 torneo point
+      newTorneosPrevios[player] += 1;
+      newTorneoActual.nico = 0;
+      newTorneoActual.alan = 0;
+    }
   }
 
   await updateDoc(ref, {
@@ -31,16 +31,51 @@ async function addFecha(player: Player, data: ReturnType<typeof useBasketball>) 
   });
 }
 
-async function canjear(player: Player, data: ReturnType<typeof useBasketball>) {
-  const ref = doc(db, 'scores', 'basketball');
-  const unclaimed =
-    data.torneosPrevios[player] -
-    data.torneosPrevios[player === 'nico' ? 'nicoCanjados' : 'alanCanjados'];
-  if (unclaimed <= 0) return;
-  const key = player === 'nico' ? 'nicoCanjados' : 'alanCanjados';
-  await updateDoc(ref, {
-    [`torneosPrevios.${key}`]: data.torneosPrevios[key as 'nicoCanjados' | 'alanCanjados'] + 1,
+async function removePartido(player: Player, data: ReturnType<typeof useBasketball>) {
+  if (data.fechaActual[player] <= 0) return;
+  await updateDoc(doc(db, 'scores', 'basketball'), {
+    [`fechaActual.${player}`]: data.fechaActual[player] - 1,
   });
+}
+
+async function removeFecha(player: Player, data: ReturnType<typeof useBasketball>) {
+  if (data.torneoActual[player] <= 0) return;
+  await updateDoc(doc(db, 'scores', 'basketball'), {
+    [`torneoActual.${player}`]: data.torneoActual[player] - 1,
+  });
+}
+
+async function canjear(player: Player, data: ReturnType<typeof useBasketball>) {
+  const key = player === 'nico' ? 'nicoCanjados' : 'alanCanjados';
+  const unclaimed = data.torneosPrevios[player] - data.torneosPrevios[key];
+  if (unclaimed <= 0) return;
+  await updateDoc(doc(db, 'scores', 'basketball'), {
+    [`torneosPrevios.${key}`]: data.torneosPrevios[key] + 1,
+  });
+}
+
+function PlusMinusRow({
+  onPlus, onMinus, labelPlus, labelMinus, colorClass,
+}: {
+  onPlus: () => void; onMinus: () => void;
+  labelPlus: string; labelMinus: string; colorClass: string;
+}) {
+  return (
+    <div className="flex flex-col gap-1 flex-1">
+      <button
+        onClick={onPlus}
+        className={`w-full py-4 rounded-2xl text-white font-bold text-lg active:scale-95 transition-transform ${colorClass}`}
+      >
+        {labelPlus}
+      </button>
+      <button
+        onClick={onMinus}
+        className="w-full py-2 rounded-xl text-gray-400 font-medium text-sm bg-gray-700 active:bg-gray-600 active:scale-95 transition-transform"
+      >
+        {labelMinus}
+      </button>
+    </div>
+  );
 }
 
 export default function Basketball() {
@@ -53,21 +88,16 @@ export default function Basketball() {
     <div className="space-y-4 p-4">
       <h1 className="text-2xl font-bold text-center text-orange-400">🏀 Básquet</h1>
 
-      {/* Torneos totales */}
+      {/* Torneos ganados */}
       <div className="bg-gray-800 rounded-2xl p-4 space-y-2">
         <h2 className="text-xs text-gray-400 uppercase tracking-widest text-center">Torneos ganados</h2>
         <div className="flex justify-around items-center">
           <div className="text-center">
             <div className="text-4xl font-black text-blue-400">{tp.nico}</div>
             <div className="text-xs text-gray-400">Nico</div>
-            {tp.nicoCanjados > 0 && (
-              <div className="text-xs text-green-500">{tp.nicoCanjados} canjeados</div>
-            )}
+            {tp.nicoCanjados > 0 && <div className="text-xs text-green-500">{tp.nicoCanjados} canjeados</div>}
             {nicoUnclaimed > 0 && (
-              <button
-                onClick={() => canjear('nico', data)}
-                className="mt-1 text-xs bg-green-700 text-white px-2 py-0.5 rounded-full active:bg-green-800"
-              >
+              <button onClick={() => canjear('nico', data)} className="mt-1 text-xs bg-green-700 text-white px-2 py-0.5 rounded-full active:bg-green-800">
                 Canjear
               </button>
             )}
@@ -76,14 +106,9 @@ export default function Basketball() {
           <div className="text-center">
             <div className="text-4xl font-black text-red-400">{tp.alan}</div>
             <div className="text-xs text-gray-400">Alan</div>
-            {tp.alanCanjados > 0 && (
-              <div className="text-xs text-green-500">{tp.alanCanjados} canjeados</div>
-            )}
+            {tp.alanCanjados > 0 && <div className="text-xs text-green-500">{tp.alanCanjados} canjeados</div>}
             {alanUnclaimed > 0 && (
-              <button
-                onClick={() => canjear('alan', data)}
-                className="mt-1 text-xs bg-green-700 text-white px-2 py-0.5 rounded-full active:bg-green-800"
-              >
+              <button onClick={() => canjear('alan', data)} className="mt-1 text-xs bg-green-700 text-white px-2 py-0.5 rounded-full active:bg-green-800">
                 Canjear
               </button>
             )}
@@ -91,10 +116,10 @@ export default function Basketball() {
         </div>
       </div>
 
-      {/* Torneo actual */}
+      {/* Fechas en torneo actual */}
       <div className="bg-gray-800 rounded-2xl p-4 space-y-2">
         <h2 className="text-xs text-gray-400 uppercase tracking-widest text-center">
-          Torneo actual (primero a {FECHAS_PER_TORNEO})
+          Fechas en torneo actual (a {FECHAS_PER_TORNEO})
         </h2>
         <div className="flex justify-around items-center">
           <div className="text-center">
@@ -107,12 +132,16 @@ export default function Basketball() {
             <div className="text-xs text-gray-400">Alan</div>
           </div>
         </div>
+        <div className="flex gap-3 pt-1">
+          <button onClick={() => removeFecha('nico', data)} className="flex-1 py-2 rounded-xl text-gray-400 text-sm bg-gray-700 active:bg-gray-600">−1 fecha Nico</button>
+          <button onClick={() => removeFecha('alan', data)} className="flex-1 py-2 rounded-xl text-gray-400 text-sm bg-gray-700 active:bg-gray-600">−1 fecha Alan</button>
+        </div>
       </div>
 
-      {/* Fecha actual */}
+      {/* Partidos en fecha actual */}
       <div className="bg-gray-800 rounded-2xl p-4 space-y-3">
         <h2 className="text-xs text-gray-400 uppercase tracking-widest text-center">
-          Fecha {data.fechaActual.number}
+          Partidos en fecha actual (a {PARTIDOS_PER_FECHA})
         </h2>
         <div className="flex justify-around items-center">
           <div className="text-center">
@@ -126,8 +155,20 @@ export default function Basketball() {
           </div>
         </div>
         <div className="flex gap-3">
-          <ScoreButton label="+1 Nico" onClick={() => addFecha('nico', data)} color="blue" />
-          <ScoreButton label="+1 Alan" onClick={() => addFecha('alan', data)} color="red" />
+          <PlusMinusRow
+            onPlus={() => addPartido('nico', data)}
+            onMinus={() => removePartido('nico', data)}
+            labelPlus="+1 Nico"
+            labelMinus="−1 Nico"
+            colorClass="bg-blue-600 active:bg-blue-700"
+          />
+          <PlusMinusRow
+            onPlus={() => addPartido('alan', data)}
+            onMinus={() => removePartido('alan', data)}
+            labelPlus="+1 Alan"
+            labelMinus="−1 Alan"
+            colorClass="bg-red-600 active:bg-red-700"
+          />
         </div>
       </div>
     </div>

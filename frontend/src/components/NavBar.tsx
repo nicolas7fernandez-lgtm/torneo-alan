@@ -7,9 +7,9 @@ interface Props {
 
 const TABS: { id: Sport; label: string; emoji: string }[] = [
   { id: 'home', label: 'Inicio', emoji: '🏆' },
-  { id: 'basketball', label: 'Básquet', emoji: '🏀' },
-  { id: 'squash', label: 'Squash', emoji: '🎾' },
   { id: 'aoe', label: 'AoE', emoji: '⚔️' },
+  { id: 'squash', label: 'Squash', emoji: '🎾' },
+  { id: 'basketball', label: 'Básquet', emoji: '🏀' },
   { id: 'pingpong', label: 'Ping Pong', emoji: '🏓' },
 ];
 

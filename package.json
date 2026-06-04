@@ -1,0 +1,27 @@
+{
+  "name": "app-torneo-alan",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nicolas7fernandez-lgtm/torneo-alan.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/nicolas7fernandez-lgtm/torneo-alan/issues"
+  },
+  "homepage": "https://github.com/nicolas7fernandez-lgtm/torneo-alan#readme",
+  "dependencies": {
+    "firebase": "^12.14.0"
+  }
+}
