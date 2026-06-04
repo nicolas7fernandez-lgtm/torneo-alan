@@ -1,0 +1,25 @@
+import React, { useState } from 'react';
+import NavBar from './components/NavBar';
+import Basketball from './components/Basketball';
+import Squash from './components/Squash';
+import AgeOfEmpires from './components/AgeOfEmpires';
+import PingPong from './components/PingPong';
+import type { Sport } from './types';
+
+const VIEWS: Record<Sport, React.ReactElement> = {
+  basketball: <Basketball />,
+  squash: <Squash />,
+  aoe: <AgeOfEmpires />,
+  pingpong: <PingPong />,
+};
+
+export default function App() {
+  const [sport, setSport] = useState<Sport>('basketball');
+
+  return (
+    <div className="min-h-screen bg-gray-950 text-white">
+      <main className="pb-24 pt-2 max-w-md mx-auto">{VIEWS[sport]}</main>
+      <NavBar active={sport} onChange={setSport} />
+    </div>
+  );
+}
