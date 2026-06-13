@@ -10,7 +10,8 @@ async function addPoint(player: Player, data: ReturnType<typeof useAoe>) {
   const newTorneos = { ...data.torneos };
   if (newFechas[player] >= FECHAS_PER_TORNEO) {
     newTorneos[player] += 1;
-    newFechas[player] = 0;
+    newFechas.nico = 0;
+    newFechas.alan = 0;
   }
   await updateDoc(ref, { fechas: newFechas, torneos: newTorneos });
 }
