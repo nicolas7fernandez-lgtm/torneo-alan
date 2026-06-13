@@ -3,3 +3,4 @@ frontend/dist/
 frontend/.env
 .env
 .tmp/
+.vercel/
