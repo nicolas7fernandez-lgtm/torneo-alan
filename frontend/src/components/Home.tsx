@@ -1,21 +1,26 @@
 import { useEffect, useState } from 'react';
-import { useBasketball, useSquash, useAoe, usePingPong, useLastActivity } from '../hooks/useScores';
+import { useBasketball, useSquash, useAoe, usePingPong, useTodayActivity } from '../hooks/useScores';
+import type { SportSummary } from '../hooks/useScores';
 
-function timeAgo(ts: { seconds: number } | null): string {
-  if (!ts) return '...';
-  const date = new Date(ts.seconds * 1000);
-  const diff = Math.floor((Date.now() - ts.seconds * 1000) / 1000);
-  if (diff < 60) return 'hace un momento';
-  if (diff < 3600) return `hace ${Math.floor(diff / 60)}min`;
-  const now = new Date();
-  const hhmm = date.toLocaleTimeString('es-AR', { hour: '2-digit', minute: '2-digit' });
-  if (date.toDateString() === now.toDateString()) return `hoy a las ${hhmm}`;
-  const yesterday = new Date(now);
-  yesterday.setDate(now.getDate() - 1);
-  if (date.toDateString() === yesterday.toDateString()) return `ayer a las ${hhmm}`;
-  const dd = String(date.getDate()).padStart(2, '0');
-  const mm = String(date.getMonth() + 1).padStart(2, '0');
-  return `${dd}/${mm} a las ${hhmm}`;
+function formatNet(net: number): string {
+  if (net > 0) return `+${net}`;
+  if (net < 0) return `−${Math.abs(net)}`;
+  return '';
+}
+
+function SportLine({ s }: { s: SportSummary }) {
+  const parts: string[] = [];
+  if (s.nicoNet !== 0) parts.push(`Nico ${formatNet(s.nicoNet)}`);
+  if (s.alanNet !== 0) parts.push(`Alan ${formatNet(s.alanNet)}`);
+  const summary = parts.length ? parts.join(', ') : 'actividad';
+  return (
+    <div className="text-xs flex items-center gap-1.5">
+      <span>{s.emoji}</span>
+      <span className="text-gray-300 font-medium">{s.label}</span>
+      <span className="text-gray-600">·</span>
+      <span className="text-gray-400">{summary}</span>
+    </div>
+  );
 }
 
 function SportCard({
@@ -52,7 +57,7 @@ export default function Home() {
   const squash = useSquash();
   const aoe = useAoe();
   const pp = usePingPong();
-  const lastActivity = useLastActivity();
+  const todayActivity = useTodayActivity();
   const [, setTick] = useState(0);
 
   useEffect(() => {
@@ -93,17 +98,11 @@ export default function Home() {
           </>
         )}
 
-        {/* Last activity — below champion */}
-        {lastActivity && (
-          <div className="mt-4 pt-4 border-t border-gray-700 text-left space-y-0.5">
-            <div className="text-xs text-gray-500 uppercase tracking-widest">Última actividad</div>
-            <div className="text-xs text-gray-400">
-              {timeAgo(lastActivity.timestamp)} · <span className="text-gray-300">{lastActivity.sportLabel}</span>
-            </div>
-            <div className="text-xs">
-              <span className="text-orange-400 font-medium">{lastActivity.author}</span>
-              <span className="text-gray-400"> {lastActivity.action}</span>
-            </div>
+        {/* Today's activity summary */}
+        {todayActivity.length > 0 && (
+          <div className="mt-4 pt-4 border-t border-gray-700 text-left space-y-1.5">
+            <div className="text-xs text-gray-500 uppercase tracking-widest">Hoy</div>
+            {todayActivity.map(s => <SportLine key={s.sport} s={s} />)}
           </div>
         )}
       </div>

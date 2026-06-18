@@ -53,39 +53,62 @@ export function usePingPong() {
   return data;
 }
 
-const SPORT_LABELS: Record<string, string> = {
-  basketball: '🏀 Básquet',
-  squash: '🎾 Squash',
-  aoe: '⚔️ Age of Empires',
-  pingpong: '🏓 Ping Pong',
+const SPORT_LABELS: Record<string, { label: string; emoji: string }> = {
+  basketball: { label: 'Básquet',       emoji: '🏀' },
+  squash:     { label: 'Squash',         emoji: '🎾' },
+  aoe:        { label: 'Age of Empires', emoji: '⚔️' },
+  pingpong:   { label: 'Ping Pong',      emoji: '🏓' },
 };
 
-export interface LastActivity extends HistoryEntry {
+export interface SportSummary {
   sport: string;
-  sportLabel: string;
+  emoji: string;
+  label: string;
+  nicoNet: number;
+  alanNet: number;
+  lastTs: number;
 }
 
-export function useLastActivity() {
-  const [activity, setActivity] = useState<LastActivity | null>(null);
+export function useTodayActivity(): SportSummary[] {
+  const [summaries, setSummaries] = useState<SportSummary[]>([]);
 
   useEffect(() => {
     const sports = ['basketball', 'squash', 'aoe', 'pingpong'];
-    const latest: Record<string, LastActivity> = {};
+    const buckets: Record<string, HistoryEntry[]> = {};
+
+    const rebuild = () => {
+      const startOfDay = new Date();
+      startOfDay.setHours(0, 0, 0, 0);
+      const since = startOfDay.getTime() / 1000;
+
+      const result: SportSummary[] = [];
+      for (const s of sports) {
+        const entries = (buckets[s] ?? []).filter(e => (e.timestamp?.seconds ?? 0) >= since);
+        if (!entries.length) continue;
+
+        let nicoNet = 0, alanNet = 0, lastTs = 0;
+        for (const e of entries) {
+          const m = e.action.match(/^([+\-−])1.+para (nico|alan)/i);
+          if (m) {
+            const sign = m[1] === '+' ? 1 : -1;
+            if (m[2].toLowerCase() === 'nico') nicoNet += sign;
+            else alanNet += sign;
+          }
+          lastTs = Math.max(lastTs, e.timestamp?.seconds ?? 0);
+        }
+        result.push({ sport: s, ...SPORT_LABELS[s], nicoNet, alanNet, lastTs });
+      }
+
+      result.sort((a, b) => b.lastTs - a.lastTs);
+      setSummaries(result);
+    };
 
     const unsubs = sports.map(sport =>
       onSnapshot(
-        query(collection(db, 'scores', sport, 'history'), orderBy('timestamp', 'desc'), limit(1)),
+        query(collection(db, 'scores', sport, 'history'), orderBy('timestamp', 'desc'), limit(100)),
         snap => {
-          if (!snap.empty) {
-            const d = snap.docs[0];
-            latest[sport] = { id: d.id, sport, sportLabel: SPORT_LABELS[sport], ...d.data() } as LastActivity;
-          }
-          const all = Object.values(latest);
-          if (all.length > 0) {
-            setActivity(all.reduce((a, b) =>
-              (a.timestamp?.seconds ?? 0) >= (b.timestamp?.seconds ?? 0) ? a : b
-            ));
-          }
+          buckets[sport] = snap.docs.map(d => ({ id: d.id, ...d.data() } as HistoryEntry));
+          rebuild();
         }
       )
     );
@@ -93,5 +116,5 @@ export function useLastActivity() {
     return () => unsubs.forEach(u => u());
   }, []);
 
-  return activity;
+  return summaries;
 }
