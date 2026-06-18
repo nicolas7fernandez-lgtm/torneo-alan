@@ -36,3 +36,10 @@ export interface AllScores {
 
 export type Sport = 'home' | 'basketball' | 'squash' | 'aoe' | 'pingpong';
 export type Player = 'nico' | 'alan';
+
+export interface HistoryEntry {
+  id: string;
+  action: string;
+  author: string;
+  timestamp: { seconds: number; nanoseconds: number } | null;
+}

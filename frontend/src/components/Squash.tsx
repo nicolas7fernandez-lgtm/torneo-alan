@@ -1,14 +1,18 @@
 import { db, doc, updateDoc, increment } from '../lib/firebase';
+import { logHistory } from '../lib/history';
 import { useSquash } from '../hooks/useScores';
+import ChangeHistory from './ChangeHistory';
 import type { Player } from '../types';
 
 async function addPoint(player: Player) {
   await updateDoc(doc(db, 'scores', 'squash'), { [`fechas.${player}`]: increment(1) });
+  await logHistory('squash', `+1 fecha para ${player}`);
 }
 
 async function removePoint(player: Player, current: number) {
   if (current <= 0) return;
   await updateDoc(doc(db, 'scores', 'squash'), { [`fechas.${player}`]: increment(-1) });
+  await logHistory('squash', `-1 fecha para ${player}`);
 }
 
 export default function Squash() {
@@ -48,6 +52,8 @@ export default function Squash() {
           <button onClick={() => removePoint('alan', data.fechas.alan)} className="w-full py-2 rounded-xl bg-gray-700 text-gray-400 text-sm active:bg-gray-600 active:scale-95 transition-transform">−1 Alan</button>
         </div>
       </div>
+
+      <ChangeHistory sport="squash" />
     </div>
   );
 }

@@ -1,26 +1,29 @@
 import { db, doc, updateDoc } from '../lib/firebase';
+import { logHistory } from '../lib/history';
 import { useBasketball } from '../hooks/useScores';
+import ChangeHistory from './ChangeHistory';
 import type { Player } from '../types';
 
-const PARTIDOS_PER_FECHA = 7;  // partidos ganados → 1 fecha point
-const FECHAS_PER_TORNEO = 10;  // fecha points → 1 torneo point
+const PARTIDOS_PER_FECHA = 7;
+const FECHAS_PER_TORNEO = 10;
 
 async function addPartido(player: Player, data: ReturnType<typeof useBasketball>) {
   const ref = doc(db, 'scores', 'basketball');
   const newFecha = { ...data.fechaActual, [player]: data.fechaActual[player] + 1 };
   const newTorneoActual = { ...data.torneoActual };
   const newTorneosPrevios = { ...data.torneosPrevios };
+  let action = `+1 partido para ${player}`;
 
   if (newFecha[player] >= PARTIDOS_PER_FECHA) {
-    // 7 partidos → 1 fecha point
     newTorneoActual[player] += 1;
     newFecha[player] = 0;
+    action = `+1 partido para ${player} → fecha completada!`;
 
     if (newTorneoActual[player] >= FECHAS_PER_TORNEO) {
-      // 10 fechas → 1 torneo point
       newTorneosPrevios[player] += 1;
       newTorneoActual.nico = 0;
       newTorneoActual.alan = 0;
+      action = `+1 partido para ${player} → torneo ganado!`;
     }
   }
 
@@ -29,6 +32,7 @@ async function addPartido(player: Player, data: ReturnType<typeof useBasketball>
     torneoActual: newTorneoActual,
     torneosPrevios: newTorneosPrevios,
   });
+  await logHistory('basketball', action);
 }
 
 async function removePartido(player: Player, data: ReturnType<typeof useBasketball>) {
@@ -36,6 +40,7 @@ async function removePartido(player: Player, data: ReturnType<typeof useBasketba
   await updateDoc(doc(db, 'scores', 'basketball'), {
     [`fechaActual.${player}`]: data.fechaActual[player] - 1,
   });
+  await logHistory('basketball', `-1 partido para ${player}`);
 }
 
 async function removeFecha(player: Player, data: ReturnType<typeof useBasketball>) {
@@ -43,6 +48,7 @@ async function removeFecha(player: Player, data: ReturnType<typeof useBasketball
   await updateDoc(doc(db, 'scores', 'basketball'), {
     [`torneoActual.${player}`]: data.torneoActual[player] - 1,
   });
+  await logHistory('basketball', `-1 fecha para ${player}`);
 }
 
 async function canjear(player: Player, data: ReturnType<typeof useBasketball>) {
@@ -52,6 +58,7 @@ async function canjear(player: Player, data: ReturnType<typeof useBasketball>) {
   await updateDoc(doc(db, 'scores', 'basketball'), {
     [`torneosPrevios.${key}`]: data.torneosPrevios[key] + 1,
   });
+  await logHistory('basketball', `canjeó torneo de ${player}`);
 }
 
 function PlusMinusRow({
@@ -171,6 +178,8 @@ export default function Basketball() {
           />
         </div>
       </div>
+
+      <ChangeHistory sport="basketball" />
     </div>
   );
 }

@@ -1,5 +1,7 @@
 import { db, doc, updateDoc } from '../lib/firebase';
+import { logHistory } from '../lib/history';
 import { useAoe } from '../hooks/useScores';
+import ChangeHistory from './ChangeHistory';
 import type { Player } from '../types';
 
 const FECHAS_PER_TORNEO = 50;
@@ -12,8 +14,12 @@ async function addPoint(player: Player, data: ReturnType<typeof useAoe>) {
     newTorneos[player] += 1;
     newFechas.nico = 0;
     newFechas.alan = 0;
+    await updateDoc(ref, { fechas: newFechas, torneos: newTorneos });
+    await logHistory('aoe', `+1 fecha para ${player} → torneo! ambos a 0`);
+  } else {
+    await updateDoc(ref, { fechas: newFechas, torneos: newTorneos });
+    await logHistory('aoe', `+1 fecha para ${player}`);
   }
-  await updateDoc(ref, { fechas: newFechas, torneos: newTorneos });
 }
 
 async function removePoint(player: Player, data: ReturnType<typeof useAoe>) {
@@ -21,6 +27,7 @@ async function removePoint(player: Player, data: ReturnType<typeof useAoe>) {
   await updateDoc(doc(db, 'scores', 'aoe'), {
     [`fechas.${player}`]: data.fechas[player] - 1,
   });
+  await logHistory('aoe', `-1 fecha para ${player}`);
 }
 
 async function removeTorneo(player: Player, data: ReturnType<typeof useAoe>) {
@@ -28,6 +35,7 @@ async function removeTorneo(player: Player, data: ReturnType<typeof useAoe>) {
   await updateDoc(doc(db, 'scores', 'aoe'), {
     [`torneos.${player}`]: data.torneos[player] - 1,
   });
+  await logHistory('aoe', `-1 torneo para ${player}`);
 }
 
 export default function AgeOfEmpires() {
@@ -115,6 +123,8 @@ export default function AgeOfEmpires() {
           <button onClick={() => removePoint('alan', data)} className="w-full py-2 rounded-xl bg-gray-700 text-gray-400 text-sm active:bg-gray-600 active:scale-95 transition-transform">−1 Alan</button>
         </div>
       </div>
+
+      <ChangeHistory sport="aoe" />
     </div>
   );
 }
