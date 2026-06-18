@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useBasketball, useSquash, useAoe, usePingPong, useTodayActivity } from '../hooks/useScores';
 import type { SportSummary } from '../hooks/useScores';
+import Quejas from './Quejas';
 
 function formatNet(net: number): string {
   if (net > 0) return `+${net}`;
@@ -127,6 +128,8 @@ export default function Home() {
       <SportCard emoji="🎾" name="Squash" nicoScore={squash.torneos.nico} alanScore={squash.torneos.alan} subtitle="torneos" />
       <SportCard emoji="⚔️" name="Age of Empires" nicoScore={aoe.torneos.nico} alanScore={aoe.torneos.alan} subtitle={`torneos · ${aoe.fechas.nico}—${aoe.fechas.alan} fechas`} />
       <SportCard emoji="🏓" name="Ping Pong" nicoScore={pp.fechas.nico} alanScore={pp.fechas.alan} subtitle="fechas" />
+
+      <Quejas />
     </div>
   );
 }
