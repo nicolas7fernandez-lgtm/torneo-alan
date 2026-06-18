@@ -81,7 +81,7 @@ export default function Quejas() {
             value={text}
             onChange={e => setText(e.target.value.slice(0, MAX_CHARS))}
             onKeyDown={e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); submit(); } }}
-            placeholder="Escribí tu queja..."
+            placeholder="¿Qué te pasa hoy? (lesión, cansancio...)"
             rows={2}
             className="w-full bg-gray-800 border border-gray-700 rounded-xl px-3 py-2.5 text-sm text-white placeholder-gray-500 outline-none focus:border-orange-400 resize-none transition-colors"
           />
@@ -94,7 +94,7 @@ export default function Quejas() {
           disabled={!text.trim() || sending}
           className="w-full py-2.5 rounded-xl bg-gray-700 hover:bg-gray-600 text-white text-sm font-medium disabled:opacity-30 transition-colors active:scale-95"
         >
-          Enviar queja
+          Registrar
         </button>
       </div>
     </div>
