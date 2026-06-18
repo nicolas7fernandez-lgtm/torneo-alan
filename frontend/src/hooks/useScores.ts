@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
-import { db, doc, onSnapshot } from '../lib/firebase';
-import type { BasketballData, SquashData, AoeData, PingPongData } from '../types';
+import { db, doc, onSnapshot, collection, query, orderBy, limit } from '../lib/firebase';
+import type { BasketballData, SquashData, AoeData, PingPongData, HistoryEntry } from '../types';
 
 const DEFAULTS = {
   basketball: {
@@ -51,4 +51,47 @@ export function usePingPong() {
     });
   }, []);
   return data;
+}
+
+const SPORT_LABELS: Record<string, string> = {
+  basketball: '🏀 Básquet',
+  squash: '🎾 Squash',
+  aoe: '⚔️ Age of Empires',
+  pingpong: '🏓 Ping Pong',
+};
+
+export interface LastActivity extends HistoryEntry {
+  sport: string;
+  sportLabel: string;
+}
+
+export function useLastActivity() {
+  const [activity, setActivity] = useState<LastActivity | null>(null);
+
+  useEffect(() => {
+    const sports = ['basketball', 'squash', 'aoe', 'pingpong'];
+    const latest: Record<string, LastActivity> = {};
+
+    const unsubs = sports.map(sport =>
+      onSnapshot(
+        query(collection(db, 'scores', sport, 'history'), orderBy('timestamp', 'desc'), limit(1)),
+        snap => {
+          if (!snap.empty) {
+            const d = snap.docs[0];
+            latest[sport] = { id: d.id, sport, sportLabel: SPORT_LABELS[sport], ...d.data() } as LastActivity;
+          }
+          const all = Object.values(latest);
+          if (all.length > 0) {
+            setActivity(all.reduce((a, b) =>
+              (a.timestamp?.seconds ?? 0) >= (b.timestamp?.seconds ?? 0) ? a : b
+            ));
+          }
+        }
+      )
+    );
+
+    return () => unsubs.forEach(u => u());
+  }, []);
+
+  return activity;
 }
