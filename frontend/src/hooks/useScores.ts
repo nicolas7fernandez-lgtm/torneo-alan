@@ -8,7 +8,7 @@ const DEFAULTS = {
     torneoActual: { nico: 7, alan: 2 },
     fechaActual: { number: 10, nico: 0, alan: 0 },
   } as BasketballData,
-  squash: { fechas: { nico: 2, alan: 1 } } as SquashData,
+  squash: { fechas: { nico: 2, alan: 1 }, torneos: { nico: 0, alan: 0 } } as SquashData,
   aoe: { fechas: { nico: 38, alan: 36 }, torneos: { nico: 1, alan: 0 } } as AoeData,
   pingpong: { fechas: { nico: 5, alan: 3 } } as PingPongData,
 };

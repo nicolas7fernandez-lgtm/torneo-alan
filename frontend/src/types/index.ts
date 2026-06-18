@@ -16,6 +16,7 @@ export interface BasketballData {
 
 export interface SquashData {
   fechas: PlayerScore;
+  torneos: PlayerScore;
 }
 
 export interface AoeData {
