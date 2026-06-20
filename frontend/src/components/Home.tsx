@@ -17,9 +17,9 @@ function SportLine({ s }: { s: SportSummary }) {
   return (
     <div className="text-xs flex items-center gap-1.5">
       <span>{s.emoji}</span>
-      <span className="text-green-600 font-medium">{s.label}</span>
-      <span className="text-green-900">·</span>
-      <span className="text-gray-400">{summary}</span>
+      <span className="text-green-400/80 font-medium">{s.label}</span>
+      <span className="text-white/20">·</span>
+      <span className="text-gray-300">{summary}</span>
     </div>
   );
 }
@@ -30,21 +30,21 @@ function SportCard({ emoji, name, nicoScore, alanScore, subtitle }: {
   const nicoLeads = nicoScore > alanScore;
   const alanLeads = alanScore > nicoScore;
   return (
-    <div className="bg-black/60 backdrop-blur-sm rounded-2xl p-4 border border-green-900/30">
+    <div className="bg-black/45 backdrop-blur-md rounded-2xl p-4 border border-white/10">
       <div className="flex items-center gap-2 mb-3">
         <span className="text-xl">{emoji}</span>
-        <span className="text-sm font-semibold text-gray-300">{name}</span>
-        {subtitle && <span className="text-xs text-green-900 ml-auto">{subtitle}</span>}
+        <span className="text-sm font-semibold text-gray-200">{name}</span>
+        {subtitle && <span className="text-xs text-green-500/50 ml-auto">{subtitle}</span>}
       </div>
       <div className="flex justify-between items-center">
         <div className="text-center flex-1">
-          <div className={`text-3xl font-black ${nicoLeads ? 'text-green-400' : 'text-gray-600'}`}>{nicoScore}</div>
-          <div className={`text-xs mt-0.5 ${nicoLeads ? 'text-green-400' : 'text-gray-600'}`}>{nicoLeads ? '👑 Nico' : 'Nico'}</div>
+          <div className={`text-3xl font-black drop-shadow ${nicoLeads ? 'text-green-400' : 'text-gray-500'}`}>{nicoScore}</div>
+          <div className={`text-xs mt-0.5 ${nicoLeads ? 'text-green-400' : 'text-gray-500'}`}>{nicoLeads ? '👑 Nico' : 'Nico'}</div>
         </div>
-        <div className="text-green-900 text-xl font-thin">—</div>
+        <div className="text-white/20 text-xl font-thin">—</div>
         <div className="text-center flex-1">
-          <div className={`text-3xl font-black ${alanLeads ? 'text-red-400' : 'text-gray-600'}`}>{alanScore}</div>
-          <div className={`text-xs mt-0.5 ${alanLeads ? 'text-red-400' : 'text-gray-600'}`}>{alanLeads ? '👑 Alan' : 'Alan'}</div>
+          <div className={`text-3xl font-black drop-shadow ${alanLeads ? 'text-amber-400' : 'text-gray-500'}`}>{alanScore}</div>
+          <div className={`text-xs mt-0.5 ${alanLeads ? 'text-amber-400' : 'text-gray-500'}`}>{alanLeads ? '👑 Alan' : 'Alan'}</div>
         </div>
       </div>
     </div>
@@ -74,49 +74,49 @@ export default function Home() {
   const nicoWins = sports.filter(s => s.nico > s.alan).length;
   const alanWins = sports.filter(s => s.alan > s.nico).length;
   const champion = nicoWins > alanWins ? 'NICO' : alanWins > nicoWins ? 'ALAN' : null;
-  const champColor = champion === 'NICO' ? 'text-green-400' : champion === 'ALAN' ? 'text-red-400' : 'text-yellow-400';
+  const champColor = champion === 'NICO' ? 'text-green-400' : champion === 'ALAN' ? 'text-amber-400' : 'text-yellow-400';
 
   return (
     <div className="space-y-4 p-4">
       {/* Champion banner */}
-      <div className="bg-black/70 backdrop-blur-sm rounded-2xl p-5 text-center border border-green-900/40">
-        <div className="text-xs text-green-900 uppercase tracking-[0.2em] mb-1">Campeón Indiscutido</div>
+      <div className="bg-black/50 backdrop-blur-md rounded-2xl p-5 text-center border border-white/10">
+        <div className="text-xs text-green-500/50 uppercase tracking-[0.2em] mb-1">Campeón Indiscutido</div>
         {champion ? (
           <>
             <div className="text-5xl mb-1">👑</div>
-            <div className={`text-4xl font-black tracking-tight ${champColor}`}>{champion}</div>
-            <div className="text-xs text-green-900 mt-2">
+            <div className={`text-4xl font-black tracking-tight drop-shadow ${champColor}`}>{champion}</div>
+            <div className="text-xs text-green-500/40 mt-2">
               lidera {nicoWins > alanWins ? nicoWins : alanWins} de {sports.length} deportes
             </div>
           </>
         ) : (
           <>
             <div className="text-5xl mb-1">🤝</div>
-            <div className="text-3xl font-black text-yellow-400">EMPATE</div>
-            <div className="text-xs text-green-900 mt-2">{nicoWins} — {alanWins} deportes</div>
+            <div className="text-3xl font-black text-yellow-400 drop-shadow">EMPATE</div>
+            <div className="text-xs text-green-500/40 mt-2">{nicoWins} — {alanWins} deportes</div>
           </>
         )}
 
         {todayActivity.length > 0 && (
-          <div className="mt-4 pt-4 border-t border-green-900/40 text-left space-y-1.5">
-            <div className="text-xs text-green-900 uppercase tracking-widest">Hoy</div>
+          <div className="mt-4 pt-4 border-t border-white/10 text-left space-y-1.5">
+            <div className="text-xs text-green-500/50 uppercase tracking-widest">Hoy</div>
             {todayActivity.map(s => <SportLine key={s.sport} s={s} />)}
           </div>
         )}
       </div>
 
       {/* Totals */}
-      <div className="bg-black/60 backdrop-blur-sm rounded-2xl p-4 flex justify-around items-center border border-green-900/30">
+      <div className="bg-black/45 backdrop-blur-md rounded-2xl p-4 flex justify-around items-center border border-white/10">
         <div className="text-center">
-          <div className="text-3xl font-black text-green-400">{nicoWins}</div>
-          <div className="text-xs text-gray-400">Nico</div>
-          <div className="text-xs text-green-900">deportes ganados</div>
+          <div className="text-3xl font-black text-green-400 drop-shadow">{nicoWins}</div>
+          <div className="text-xs text-gray-300">Nico</div>
+          <div className="text-xs text-green-500/50">deportes ganados</div>
         </div>
-        <div className="text-green-900 text-2xl">🏆</div>
+        <div className="text-white/30 text-2xl">🏆</div>
         <div className="text-center">
-          <div className="text-3xl font-black text-red-400">{alanWins}</div>
-          <div className="text-xs text-gray-400">Alan</div>
-          <div className="text-xs text-green-900">deportes ganados</div>
+          <div className="text-3xl font-black text-amber-400 drop-shadow">{alanWins}</div>
+          <div className="text-xs text-gray-300">Alan</div>
+          <div className="text-xs text-amber-500/50">deportes ganados</div>
         </div>
       </div>
 

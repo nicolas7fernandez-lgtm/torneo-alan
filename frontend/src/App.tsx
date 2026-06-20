@@ -23,21 +23,20 @@ export default function App() {
 
   return (
     <div className="min-h-screen text-white relative">
-      {/* Matrix video background */}
+      {/* Matrix video — more visible now */}
       <video
         autoPlay loop muted playsInline
-        className="fixed inset-0 w-full h-full object-cover -z-10 opacity-25"
+        className="fixed inset-0 w-full h-full object-cover -z-10 opacity-60"
         src="/The Matrix Code thing Render - CrystalPanda (720p) (1).mp4"
       />
-      {/* Dark overlay so text stays readable */}
-      <div className="fixed inset-0 bg-black/70 -z-10" />
+      {/* Lighter overlay so the green rain shows through */}
+      <div className="fixed inset-0 bg-black/35 -z-10" />
 
       <NamePrompt />
 
-      {/* Music toggle */}
       <button
         onClick={toggle}
-        className="fixed top-3 right-3 z-40 w-9 h-9 flex items-center justify-center rounded-full bg-black/60 border border-green-900/50 backdrop-blur text-base active:scale-90 transition-transform"
+        className="fixed top-3 right-3 z-40 w-9 h-9 flex items-center justify-center rounded-full bg-black/50 border border-green-900/50 backdrop-blur text-base active:scale-90 transition-transform"
       >
         {muted ? '🔇' : '🎵'}
       </button>

@@ -8,31 +8,25 @@ export function useBackgroundMusic(src: string) {
     const audio = new Audio(src);
     audio.loop = true;
     audio.volume = 0.4;
+    audio.preload = 'auto';
     audioRef.current = audio;
 
-    // Attempt immediate autoplay
-    const startPlay = () => {
-      audio.play().catch(() => {
-        // Autoplay blocked — attach to the very next user gesture
-        const resume = () => {
-          audio.play().catch(() => {});
-          document.removeEventListener('touchstart', resume, true);
-          document.removeEventListener('mousedown', resume, true);
-          document.removeEventListener('keydown', resume, true);
-        };
-        document.addEventListener('touchstart', resume, { capture: true, once: true });
-        document.addEventListener('mousedown', resume, { capture: true, once: true });
-        document.addEventListener('keydown', resume, { capture: true, once: true });
-      });
+    // Try immediate autoplay (works on desktop / Android Chrome)
+    audio.play().catch(() => {});
+
+    // iOS Safari requires the play() call to be SYNCHRONOUS inside a user event.
+    // We listen at capture phase so we beat every other handler on the page.
+    const unlock = () => {
+      audio.play();            // intentionally no .catch — must be sync
     };
 
-    // Small delay lets the browser settle before the first play attempt
-    const t = setTimeout(startPlay, 100);
+    const EVENTS = ['touchstart', 'touchend', 'pointerdown', 'mousedown'] as const;
+    EVENTS.forEach(e => document.addEventListener(e, unlock, { capture: true, once: true }));
 
     return () => {
-      clearTimeout(t);
       audio.pause();
       audio.src = '';
+      EVENTS.forEach(e => document.removeEventListener(e, unlock, true));
     };
   }, [src]);
 
@@ -40,7 +34,6 @@ export function useBackgroundMusic(src: string) {
     if (!audioRef.current) return;
     const next = !muted;
     audioRef.current.muted = next;
-    // Also try playing in case it hasn't started yet
     if (!next) audioRef.current.play().catch(() => {});
     setMuted(next);
   };
