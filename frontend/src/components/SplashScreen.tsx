@@ -126,6 +126,11 @@ export default function SplashScreen({ onEnter, onDone }: Props) {
       >
         {/* Title */}
         <div className="flex flex-col items-center text-center gap-3">
+          <img
+            src="/stickman.gif"
+            alt=""
+            className="w-64 h-auto drop-shadow-[0_0_12px_rgba(74,222,128,0.4)]"
+          />
           <div
             className="text-5xl font-black tracking-wide leading-none text-green-400"
             style={{ textShadow: '0 0 25px rgba(74,222,128,0.85), 0 0 60px rgba(74,222,128,0.4)' }}
