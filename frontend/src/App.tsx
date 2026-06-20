@@ -6,6 +6,7 @@ import Squash from './components/Squash';
 import AgeOfEmpires from './components/AgeOfEmpires';
 import PingPong from './components/PingPong';
 import NamePrompt from './components/NamePrompt';
+import SplashScreen from './components/SplashScreen';
 import { useBackgroundMusic } from './hooks/useBackgroundMusic';
 import type { Sport } from './types';
 
@@ -19,17 +20,16 @@ const VIEWS: Record<Sport, React.ReactElement> = {
 
 export default function App() {
   const [sport, setSport] = useState<Sport>('home');
-  const { muted, toggle } = useBackgroundMusic('/Furious Angels - Rob Dougan Matrix Reloaded (1).mp3');
+  const [splashDone, setSplashDone] = useState(false);
+  const { muted, toggle, start } = useBackgroundMusic('/Furious Angels - Rob Dougan Matrix Reloaded (1).mp3');
 
   return (
     <div className="min-h-screen text-white relative">
-      {/* Matrix video — more visible now */}
       <video
         autoPlay loop muted playsInline
         className="fixed inset-0 w-full h-full object-cover -z-10 opacity-60"
         src="/The Matrix Code thing Render - CrystalPanda (720p) (1).mp4"
       />
-      {/* Lighter overlay so the green rain shows through */}
       <div className="fixed inset-0 bg-black/35 -z-10" />
 
       <NamePrompt />
@@ -43,6 +43,13 @@ export default function App() {
 
       <main className="pb-24 pt-2 max-w-md mx-auto">{VIEWS[sport]}</main>
       <NavBar active={sport} onChange={setSport} />
+
+      {!splashDone && (
+        <SplashScreen
+          onEnter={start}
+          onDone={() => setSplashDone(true)}
+        />
+      )}
     </div>
   );
 }

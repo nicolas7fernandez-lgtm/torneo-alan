@@ -54,7 +54,7 @@ function PlusMinusRow({ onPlus, onMinus, labelPlus, labelMinus, plusClass }: {
 }) {
   return (
     <div className="flex flex-col gap-1 flex-1">
-      <button onClick={onPlus} className={`w-full py-4 rounded-2xl font-bold text-lg text-black active:scale-95 transition-transform ${plusClass}`}>{labelPlus}</button>
+      <button onClick={onPlus} className={`w-full py-4 rounded-2xl font-bold text-lg text-white active:scale-95 transition-transform ${plusClass}`}>{labelPlus}</button>
       <button onClick={onMinus} className="w-full py-2 rounded-xl text-gray-300 text-sm bg-black/40 border border-white/10 active:bg-black/60 active:scale-95 transition-transform">
         {labelMinus}
       </button>
@@ -76,17 +76,17 @@ export default function Basketball() {
         <h2 className="text-xs text-green-500/60 uppercase tracking-widest text-center">Torneos ganados</h2>
         <div className="flex justify-around items-center">
           <div className="text-center">
-            <div className="text-4xl font-black text-green-400 drop-shadow">{tp.nico}</div>
+            <div className="text-4xl font-black text-violet-300 drop-shadow">{tp.nico}</div>
             <div className="text-xs text-gray-300">Nico</div>
-            {tp.nicoCanjados > 0 && <div className="text-xs text-green-500">{tp.nicoCanjados} canjeados</div>}
-            {nicoUnclaimed > 0 && <button onClick={() => canjear('nico', data)} className="mt-1 text-xs bg-green-900/70 text-green-300 px-2 py-0.5 rounded-full border border-green-700/40">Canjear</button>}
+            {tp.nicoCanjados > 0 && <div className="text-xs text-violet-400">{tp.nicoCanjados} canjeados</div>}
+            {nicoUnclaimed > 0 && <button onClick={() => canjear('nico', data)} className="mt-1 text-xs bg-violet-900/60 text-violet-300 px-2 py-0.5 rounded-full border border-violet-700/40">Canjear</button>}
           </div>
           <div className="text-white/20 text-2xl">—</div>
           <div className="text-center">
-            <div className="text-4xl font-black text-amber-400 drop-shadow">{tp.alan}</div>
+            <div className="text-4xl font-black text-sky-300 drop-shadow">{tp.alan}</div>
             <div className="text-xs text-gray-300">Alan</div>
-            {tp.alanCanjados > 0 && <div className="text-xs text-amber-600">{tp.alanCanjados} canjeados</div>}
-            {alanUnclaimed > 0 && <button onClick={() => canjear('alan', data)} className="mt-1 text-xs bg-amber-900/70 text-amber-300 px-2 py-0.5 rounded-full border border-amber-700/40">Canjear</button>}
+            {tp.alanCanjados > 0 && <div className="text-xs text-sky-400">{tp.alanCanjados} canjeados</div>}
+            {alanUnclaimed > 0 && <button onClick={() => canjear('alan', data)} className="mt-1 text-xs bg-sky-900/60 text-sky-300 px-2 py-0.5 rounded-full border border-sky-700/40">Canjear</button>}
           </div>
         </div>
       </div>
@@ -95,12 +95,12 @@ export default function Basketball() {
         <h2 className="text-xs text-green-500/60 uppercase tracking-widest text-center">Fechas en torneo actual (a {FECHAS_PER_TORNEO})</h2>
         <div className="flex justify-around items-center">
           <div className="text-center">
-            <div className="text-5xl font-black text-green-400 drop-shadow">{data.torneoActual.nico}</div>
+            <div className="text-5xl font-black text-violet-300 drop-shadow">{data.torneoActual.nico}</div>
             <div className="text-xs text-gray-300">Nico</div>
           </div>
           <div className="text-white/20 text-3xl">—</div>
           <div className="text-center">
-            <div className="text-5xl font-black text-amber-400 drop-shadow">{data.torneoActual.alan}</div>
+            <div className="text-5xl font-black text-sky-300 drop-shadow">{data.torneoActual.alan}</div>
             <div className="text-xs text-gray-300">Alan</div>
           </div>
         </div>
@@ -114,18 +114,18 @@ export default function Basketball() {
         <h2 className="text-xs text-green-500/60 uppercase tracking-widest text-center">Partidos en fecha actual (a {PARTIDOS_PER_FECHA})</h2>
         <div className="flex justify-around items-center">
           <div className="text-center">
-            <div className="text-4xl font-bold text-green-400 drop-shadow">{data.fechaActual.nico}</div>
+            <div className="text-4xl font-bold text-violet-300 drop-shadow">{data.fechaActual.nico}</div>
             <div className="text-xs text-gray-300">Nico</div>
           </div>
           <div className="text-white/20 text-2xl">—</div>
           <div className="text-center">
-            <div className="text-4xl font-bold text-amber-400 drop-shadow">{data.fechaActual.alan}</div>
+            <div className="text-4xl font-bold text-sky-300 drop-shadow">{data.fechaActual.alan}</div>
             <div className="text-xs text-gray-300">Alan</div>
           </div>
         </div>
         <div className="flex gap-3">
-          <PlusMinusRow onPlus={() => addPartido('nico', data)} onMinus={() => removePartido('nico', data)} labelPlus="+1 Nico" labelMinus="−1 Nico" plusClass="bg-green-400 hover:bg-green-300" />
-          <PlusMinusRow onPlus={() => addPartido('alan', data)} onMinus={() => removePartido('alan', data)} labelPlus="+1 Alan" labelMinus="−1 Alan" plusClass="bg-amber-400 hover:bg-amber-300" />
+          <PlusMinusRow onPlus={() => addPartido('nico', data)} onMinus={() => removePartido('nico', data)} labelPlus="+1 Nico" labelMinus="−1 Nico" plusClass="bg-violet-500 hover:bg-violet-400" />
+          <PlusMinusRow onPlus={() => addPartido('alan', data)} onMinus={() => removePartido('alan', data)} labelPlus="+1 Alan" labelMinus="−1 Alan" plusClass="bg-sky-500 hover:bg-sky-400" />
         </div>
       </div>
 

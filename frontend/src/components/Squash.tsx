@@ -45,12 +45,12 @@ export default function Squash() {
         <h2 className="text-xs text-green-500/60 uppercase tracking-widest text-center">Torneos ganados</h2>
         <div className="flex justify-around items-center">
           <div className="text-center">
-            <div className="text-5xl font-black text-green-400 drop-shadow">{data.torneos.nico}</div>
+            <div className="text-5xl font-black text-violet-300 drop-shadow">{data.torneos.nico}</div>
             <div className="text-xs text-gray-300">Nico</div>
           </div>
           <div className="text-white/20 text-3xl">—</div>
           <div className="text-center">
-            <div className="text-5xl font-black text-amber-400 drop-shadow">{data.torneos.alan}</div>
+            <div className="text-5xl font-black text-sky-300 drop-shadow">{data.torneos.alan}</div>
             <div className="text-xs text-gray-300">Alan</div>
           </div>
         </div>
@@ -66,12 +66,12 @@ export default function Squash() {
         </h2>
         <div className="flex justify-around items-center">
           <div className="text-center">
-            <div className="text-6xl font-black text-green-400 drop-shadow">{data.fechas.nico}</div>
+            <div className="text-6xl font-black text-violet-300 drop-shadow">{data.fechas.nico}</div>
             <div className="text-sm text-gray-300">Nico</div>
           </div>
           <div className="text-white/20 text-3xl">—</div>
           <div className="text-center">
-            <div className="text-6xl font-black text-amber-400 drop-shadow">{data.fechas.alan}</div>
+            <div className="text-6xl font-black text-sky-300 drop-shadow">{data.fechas.alan}</div>
             <div className="text-sm text-gray-300">Alan</div>
           </div>
         </div>
@@ -79,13 +79,13 @@ export default function Squash() {
           <div>
             <div className="flex justify-between text-xs text-gray-400 mb-1"><span>Nico</span><span>{data.fechas.nico}/{FECHAS_PER_TORNEO}</span></div>
             <div className="h-2 bg-black/50 rounded-full overflow-hidden">
-              <div className="h-full bg-green-500 rounded-full transition-all" style={{ width: `${(data.fechas.nico / FECHAS_PER_TORNEO) * 100}%` }} />
+              <div className="h-full bg-violet-500 rounded-full transition-all" style={{ width: `${(data.fechas.nico / FECHAS_PER_TORNEO) * 100}%` }} />
             </div>
           </div>
           <div>
             <div className="flex justify-between text-xs text-gray-400 mb-1"><span>Alan</span><span>{data.fechas.alan}/{FECHAS_PER_TORNEO}</span></div>
             <div className="h-2 bg-black/50 rounded-full overflow-hidden">
-              <div className="h-full bg-amber-500 rounded-full transition-all" style={{ width: `${(data.fechas.alan / FECHAS_PER_TORNEO) * 100}%` }} />
+              <div className="h-full bg-sky-500 rounded-full transition-all" style={{ width: `${(data.fechas.alan / FECHAS_PER_TORNEO) * 100}%` }} />
             </div>
           </div>
         </div>
@@ -93,11 +93,11 @@ export default function Squash() {
 
       <div className="flex gap-3">
         <div className="flex flex-col gap-1 flex-1">
-          <button onClick={() => addPoint('nico', data)} className="w-full py-4 rounded-2xl bg-green-400 text-black font-bold text-lg active:scale-95 transition-transform hover:bg-green-300">+1 Nico</button>
+          <button onClick={() => addPoint('nico', data)} className="w-full py-4 rounded-2xl bg-violet-500 hover:bg-violet-400 text-white font-bold text-lg active:scale-95 transition-transform">+1 Nico</button>
           <button onClick={() => removePoint('nico', data)} className="w-full py-2 rounded-xl bg-black/40 border border-white/10 text-gray-300 text-sm active:bg-black/60 active:scale-95 transition-transform">−1 Nico</button>
         </div>
         <div className="flex flex-col gap-1 flex-1">
-          <button onClick={() => addPoint('alan', data)} className="w-full py-4 rounded-2xl bg-amber-400 text-black font-bold text-lg active:scale-95 transition-transform hover:bg-amber-300">+1 Alan</button>
+          <button onClick={() => addPoint('alan', data)} className="w-full py-4 rounded-2xl bg-sky-500 hover:bg-sky-400 text-white font-bold text-lg active:scale-95 transition-transform">+1 Alan</button>
           <button onClick={() => removePoint('alan', data)} className="w-full py-2 rounded-xl bg-black/40 border border-white/10 text-gray-300 text-sm active:bg-black/60 active:scale-95 transition-transform">−1 Alan</button>
         </div>
       </div>

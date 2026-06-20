@@ -43,8 +43,8 @@ function SportCard({ emoji, name, nicoScore, alanScore, subtitle }: {
         </div>
         <div className="text-white/20 text-xl font-thin">—</div>
         <div className="text-center flex-1">
-          <div className={`text-3xl font-black drop-shadow ${alanLeads ? 'text-amber-400' : 'text-gray-500'}`}>{alanScore}</div>
-          <div className={`text-xs mt-0.5 ${alanLeads ? 'text-amber-400' : 'text-gray-500'}`}>{alanLeads ? '👑 Alan' : 'Alan'}</div>
+          <div className={`text-3xl font-black drop-shadow ${alanLeads ? 'text-sky-300' : 'text-gray-500'}`}>{alanScore}</div>
+          <div className={`text-xs mt-0.5 ${alanLeads ? 'text-sky-300' : 'text-gray-500'}`}>{alanLeads ? '👑 Alan' : 'Alan'}</div>
         </div>
       </div>
     </div>
@@ -74,13 +74,13 @@ export default function Home() {
   const nicoWins = sports.filter(s => s.nico > s.alan).length;
   const alanWins = sports.filter(s => s.alan > s.nico).length;
   const champion = nicoWins > alanWins ? 'NICO' : alanWins > nicoWins ? 'ALAN' : null;
-  const champColor = champion === 'NICO' ? 'text-green-400' : champion === 'ALAN' ? 'text-amber-400' : 'text-yellow-400';
+  const champColor = champion === 'NICO' ? 'text-green-400' : champion === 'ALAN' ? 'text-sky-300' : 'text-yellow-400';
 
   return (
     <div className="space-y-4 p-4">
       {/* Champion banner */}
       <div className="bg-black/50 backdrop-blur-md rounded-2xl p-5 text-center border border-white/10">
-        <div className="text-xs text-green-500/50 uppercase tracking-[0.2em] mb-1">Campeón Indiscutido</div>
+        <div className="text-xs text-green-500/50 uppercase tracking-[0.2em] mb-1">The Chosen One</div>
         {champion ? (
           <>
             <div className="text-5xl mb-1">👑</div>
@@ -114,9 +114,9 @@ export default function Home() {
         </div>
         <div className="text-white/30 text-2xl">🏆</div>
         <div className="text-center">
-          <div className="text-3xl font-black text-amber-400 drop-shadow">{alanWins}</div>
+          <div className="text-3xl font-black text-sky-300 drop-shadow">{alanWins}</div>
           <div className="text-xs text-gray-300">Alan</div>
-          <div className="text-xs text-amber-500/50">deportes ganados</div>
+          <div className="text-xs text-sky-400/50">deportes ganados</div>
         </div>
       </div>
 
