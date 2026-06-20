@@ -82,7 +82,13 @@ export default function SplashScreen({ onEnter, onDone }: Props) {
   const handle = () => {
     if (tapped) return;
     setTapped(true);
-    onEnter();
+
+    // Both sounds play synchronously inside the gesture — required for iOS unlock
+    const sfx = new Audio('/transition.mp3');
+    sfx.volume = 0.8;
+    sfx.play().catch(() => {});
+    onEnter(); // starts background music
+
     runDissolve(canvasRef.current!, () => {
       setFadingOut(true);
       setTimeout(onDone, FADE_MS);
