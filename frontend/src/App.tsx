@@ -41,7 +41,15 @@ export default function App() {
         {muted ? '🔇' : '🎵'}
       </button>
 
-      <main className="pb-24 pt-2 max-w-md mx-auto">{VIEWS[sport]}</main>
+      <main
+        className="max-w-md mx-auto"
+        style={{
+          paddingTop: 'calc(env(safe-area-inset-top, 0px) + 8px)',
+          paddingBottom: 'calc(env(safe-area-inset-bottom, 0px) + 6rem)',
+        }}
+      >
+        {VIEWS[sport]}
+      </main>
       <NavBar active={sport} onChange={setSport} />
 
       {!splashDone && (

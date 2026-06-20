@@ -15,7 +15,10 @@ const TABS: { id: Sport; label: string; emoji: string }[] = [
 
 export default function NavBar({ active, onChange }: Props) {
   return (
-    <nav className="fixed bottom-0 left-0 right-0 bg-black/85 backdrop-blur-md border-t border-green-900/40 z-50">
+    <nav
+      className="fixed bottom-0 left-0 right-0 bg-black/85 backdrop-blur-md border-t border-green-900/40 z-50"
+      style={{ paddingBottom: 'env(safe-area-inset-bottom, 0px)' }}
+    >
       <div className="flex">
         {TABS.map((tab) => (
           <button
