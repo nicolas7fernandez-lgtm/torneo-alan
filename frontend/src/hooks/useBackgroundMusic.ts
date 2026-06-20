@@ -3,7 +3,6 @@ import { useEffect, useRef, useState } from 'react';
 export function useBackgroundMusic(src: string) {
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const [muted, setMuted] = useState(false);
-  const playedRef = useRef(false);
 
   useEffect(() => {
     const audio = new Audio(src);
@@ -11,23 +10,29 @@ export function useBackgroundMusic(src: string) {
     audio.volume = 0.4;
     audioRef.current = audio;
 
-    const tryPlay = () => {
-      if (playedRef.current) return;
-      audio.play().then(() => { playedRef.current = true; }).catch(() => {});
+    // Attempt immediate autoplay
+    const startPlay = () => {
+      audio.play().catch(() => {
+        // Autoplay blocked — attach to the very next user gesture
+        const resume = () => {
+          audio.play().catch(() => {});
+          document.removeEventListener('touchstart', resume, true);
+          document.removeEventListener('mousedown', resume, true);
+          document.removeEventListener('keydown', resume, true);
+        };
+        document.addEventListener('touchstart', resume, { capture: true, once: true });
+        document.addEventListener('mousedown', resume, { capture: true, once: true });
+        document.addEventListener('keydown', resume, { capture: true, once: true });
+      });
     };
 
-    tryPlay();
-
-    // iOS Safari requires a user gesture — catch the first tap
-    const onGesture = () => tryPlay();
-    document.addEventListener('touchstart', onGesture, { once: true });
-    document.addEventListener('click', onGesture, { once: true });
+    // Small delay lets the browser settle before the first play attempt
+    const t = setTimeout(startPlay, 100);
 
     return () => {
+      clearTimeout(t);
       audio.pause();
       audio.src = '';
-      document.removeEventListener('touchstart', onGesture);
-      document.removeEventListener('click', onGesture);
     };
   }, [src]);
 
@@ -35,11 +40,9 @@ export function useBackgroundMusic(src: string) {
     if (!audioRef.current) return;
     const next = !muted;
     audioRef.current.muted = next;
+    // Also try playing in case it hasn't started yet
+    if (!next) audioRef.current.play().catch(() => {});
     setMuted(next);
-    // If first interaction on iOS didn't trigger play yet, start now
-    if (!playedRef.current) {
-      audioRef.current.play().then(() => { playedRef.current = true; }).catch(() => {});
-    }
   };
 
   return { muted, toggle };

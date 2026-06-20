@@ -15,7 +15,7 @@ const TABS: { id: Sport; label: string; emoji: string }[] = [
 
 export default function NavBar({ active, onChange }: Props) {
   return (
-    <nav className="fixed bottom-0 left-0 right-0 bg-gray-900 border-t border-gray-700 z-50">
+    <nav className="fixed bottom-0 left-0 right-0 bg-black/85 backdrop-blur-md border-t border-green-900/40 z-50">
       <div className="flex">
         {TABS.map((tab) => (
           <button
@@ -23,8 +23,8 @@ export default function NavBar({ active, onChange }: Props) {
             onClick={() => onChange(tab.id)}
             className={`flex-1 flex flex-col items-center justify-center py-3 gap-0.5 transition-colors ${
               active === tab.id
-                ? 'text-orange-400'
-                : 'text-gray-500 active:text-gray-300'
+                ? 'text-green-400'
+                : 'text-gray-600 active:text-green-600'
             }`}
           >
             <span className="text-xl leading-none">{tab.emoji}</span>

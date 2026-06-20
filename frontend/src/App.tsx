@@ -22,14 +22,22 @@ export default function App() {
   const { muted, toggle } = useBackgroundMusic('/Furious Angels - Rob Dougan Matrix Reloaded (1).mp3');
 
   return (
-    <div className="min-h-screen bg-gray-950 text-white">
+    <div className="min-h-screen text-white relative">
+      {/* Matrix video background */}
+      <video
+        autoPlay loop muted playsInline
+        className="fixed inset-0 w-full h-full object-cover -z-10 opacity-25"
+        src="/The Matrix Code thing Render - CrystalPanda (720p) (1).mp4"
+      />
+      {/* Dark overlay so text stays readable */}
+      <div className="fixed inset-0 bg-black/70 -z-10" />
+
       <NamePrompt />
 
-      {/* Music toggle — top right corner */}
+      {/* Music toggle */}
       <button
         onClick={toggle}
-        className="fixed top-3 right-3 z-40 w-9 h-9 flex items-center justify-center rounded-full bg-gray-800/80 backdrop-blur text-base active:scale-90 transition-transform"
-        title={muted ? 'Activar música' : 'Silenciar música'}
+        className="fixed top-3 right-3 z-40 w-9 h-9 flex items-center justify-center rounded-full bg-black/60 border border-green-900/50 backdrop-blur text-base active:scale-90 transition-transform"
       >
         {muted ? '🔇' : '🎵'}
       </button>

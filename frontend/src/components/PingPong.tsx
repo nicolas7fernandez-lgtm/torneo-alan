@@ -27,14 +27,14 @@ export default function PingPong() {
     <div className="space-y-4 p-4">
       <h1 className="text-2xl font-bold text-center text-pink-400">🏓 Ping Pong</h1>
 
-      <div className="bg-gray-800 rounded-2xl p-6 space-y-3">
-        <h2 className="text-xs text-gray-400 uppercase tracking-widest text-center">Fechas ganadas</h2>
+      <div className="bg-black/60 backdrop-blur-sm rounded-2xl p-6 space-y-3 border border-green-900/30">
+        <h2 className="text-xs text-green-900 uppercase tracking-widest text-center">Fechas ganadas</h2>
         <div className="flex justify-around items-center">
           <div className="text-center">
-            <div className="text-6xl font-black text-blue-400">{data.fechas.nico}</div>
+            <div className="text-6xl font-black text-green-400">{data.fechas.nico}</div>
             <div className="text-sm text-gray-400">Nico</div>
           </div>
-          <div className="text-gray-600 text-3xl font-thin">—</div>
+          <div className="text-green-900 text-3xl font-thin">—</div>
           <div className="text-center">
             <div className="text-6xl font-black text-red-400">{data.fechas.alan}</div>
             <div className="text-sm text-gray-400">Alan</div>
@@ -45,12 +45,12 @@ export default function PingPong() {
 
       <div className="flex gap-3">
         <div className="flex flex-col gap-1 flex-1">
-          <button onClick={() => addPoint('nico')} className="w-full py-4 rounded-2xl bg-blue-600 text-white font-bold text-lg active:scale-95 transition-transform">+1 Nico</button>
-          <button onClick={() => removePoint('nico', data.fechas.nico)} className="w-full py-2 rounded-xl bg-gray-700 text-gray-400 text-sm active:bg-gray-600 active:scale-95 transition-transform">−1 Nico</button>
+          <button onClick={() => addPoint('nico')} className="w-full py-4 rounded-2xl bg-green-700 text-white font-bold text-lg active:scale-95 transition-transform">+1 Nico</button>
+          <button onClick={() => removePoint('nico', data.fechas.nico)} className="w-full py-2 rounded-xl bg-black/50 border border-green-900/30 text-gray-400 text-sm active:bg-black/70 active:scale-95 transition-transform">−1 Nico</button>
         </div>
         <div className="flex flex-col gap-1 flex-1">
-          <button onClick={() => addPoint('alan')} className="w-full py-4 rounded-2xl bg-red-600 text-white font-bold text-lg active:scale-95 transition-transform">+1 Alan</button>
-          <button onClick={() => removePoint('alan', data.fechas.alan)} className="w-full py-2 rounded-xl bg-gray-700 text-gray-400 text-sm active:bg-gray-600 active:scale-95 transition-transform">−1 Alan</button>
+          <button onClick={() => addPoint('alan')} className="w-full py-4 rounded-2xl bg-red-700 text-white font-bold text-lg active:scale-95 transition-transform">+1 Alan</button>
+          <button onClick={() => removePoint('alan', data.fechas.alan)} className="w-full py-2 rounded-xl bg-black/50 border border-green-900/30 text-gray-400 text-sm active:bg-black/70 active:scale-95 transition-transform">−1 Alan</button>
         </div>
       </div>
 

@@ -56,8 +56,8 @@ export default function Quejas() {
   const remaining = MAX_CHARS - text.length;
 
   return (
-    <div className="bg-gray-900 rounded-2xl p-4 space-y-3">
-      <h3 className="text-sm font-bold text-gray-200">😤 Quejas</h3>
+    <div className="bg-black/70 backdrop-blur-sm rounded-2xl p-4 space-y-3 border border-green-900/30">
+      <h3 className="text-sm font-bold text-green-500">😤 Quejas</h3>
 
       {quejas.length > 0 && (
         <div className="space-y-3">
@@ -65,7 +65,7 @@ export default function Quejas() {
             <div key={q.id} className="space-y-0.5">
               <div className="flex items-baseline gap-2 text-xs">
                 <span className="text-orange-400 font-medium">{q.author}</span>
-                <span className="text-gray-600">{timeAgo(q.timestamp)}</span>
+                <span className="text-green-900">{timeAgo(q.timestamp)}</span>
               </div>
               <p className="text-sm text-gray-300 leading-snug">{q.text}</p>
             </div>
@@ -73,7 +73,7 @@ export default function Quejas() {
         </div>
       )}
 
-      {quejas.length > 0 && <div className="border-t border-gray-800" />}
+      {quejas.length > 0 && <div className="border-t border-green-900/30" />}
 
       <div className="space-y-2">
         <div className="relative">
@@ -83,16 +83,16 @@ export default function Quejas() {
             onKeyDown={e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); submit(); } }}
             placeholder="¿Qué te pasa hoy? (lesión, cansancio...)"
             rows={2}
-            className="w-full bg-gray-800 border border-gray-700 rounded-xl px-3 py-2.5 text-sm text-white placeholder-gray-500 outline-none focus:border-orange-400 resize-none transition-colors"
+            className="w-full bg-black/50 border border-green-900/40 rounded-xl px-3 py-2.5 text-sm text-white placeholder-green-900 outline-none focus:border-green-600 resize-none transition-colors"
           />
-          <span className={`absolute bottom-2 right-3 text-xs ${remaining < 20 ? 'text-orange-400' : 'text-gray-600'}`}>
+          <span className={`absolute bottom-2 right-3 text-xs ${remaining < 20 ? 'text-orange-400' : 'text-green-900'}`}>
             {remaining}
           </span>
         </div>
         <button
           onClick={submit}
           disabled={!text.trim() || sending}
-          className="w-full py-2.5 rounded-xl bg-gray-700 hover:bg-gray-600 text-white text-sm font-medium disabled:opacity-30 transition-colors active:scale-95"
+          className="w-full py-2.5 rounded-xl bg-green-900/60 hover:bg-green-900/80 border border-green-700/40 text-green-400 text-sm font-medium disabled:opacity-30 transition-colors active:scale-95"
         >
           Registrar
         </button>
