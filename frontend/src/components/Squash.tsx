@@ -93,11 +93,11 @@ export default function Squash() {
 
       <div className="flex gap-3">
         <div className="flex flex-col gap-1 flex-1">
-          <button onClick={() => addPoint('nico', data)} className="w-full py-4 rounded-2xl bg-violet-500 hover:bg-violet-400 text-white font-bold text-lg active:scale-95 transition-transform">+1 Nico</button>
+          <button onClick={() => addPoint('nico', data)} className="w-full py-4 rounded-2xl bg-violet-700 hover:bg-violet-600 text-white font-bold text-lg active:scale-95 transition-transform">+1 Nico</button>
           <button onClick={() => removePoint('nico', data)} className="w-full py-2 rounded-xl bg-black/40 border border-white/10 text-gray-300 text-sm active:bg-black/60 active:scale-95 transition-transform">−1 Nico</button>
         </div>
         <div className="flex flex-col gap-1 flex-1">
-          <button onClick={() => addPoint('alan', data)} className="w-full py-4 rounded-2xl bg-sky-500 hover:bg-sky-400 text-white font-bold text-lg active:scale-95 transition-transform">+1 Alan</button>
+          <button onClick={() => addPoint('alan', data)} className="w-full py-4 rounded-2xl bg-sky-700 hover:bg-sky-600 text-white font-bold text-lg active:scale-95 transition-transform">+1 Alan</button>
           <button onClick={() => removePoint('alan', data)} className="w-full py-2 rounded-xl bg-black/40 border border-white/10 text-gray-300 text-sm active:bg-black/60 active:scale-95 transition-transform">−1 Alan</button>
         </div>
       </div>

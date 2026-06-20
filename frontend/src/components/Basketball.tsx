@@ -124,8 +124,8 @@ export default function Basketball() {
           </div>
         </div>
         <div className="flex gap-3">
-          <PlusMinusRow onPlus={() => addPartido('nico', data)} onMinus={() => removePartido('nico', data)} labelPlus="+1 Nico" labelMinus="−1 Nico" plusClass="bg-violet-500 hover:bg-violet-400" />
-          <PlusMinusRow onPlus={() => addPartido('alan', data)} onMinus={() => removePartido('alan', data)} labelPlus="+1 Alan" labelMinus="−1 Alan" plusClass="bg-sky-500 hover:bg-sky-400" />
+          <PlusMinusRow onPlus={() => addPartido('nico', data)} onMinus={() => removePartido('nico', data)} labelPlus="+1 Nico" labelMinus="−1 Nico" plusClass="bg-violet-700 hover:bg-violet-600" />
+          <PlusMinusRow onPlus={() => addPartido('alan', data)} onMinus={() => removePartido('alan', data)} labelPlus="+1 Alan" labelMinus="−1 Alan" plusClass="bg-sky-700 hover:bg-sky-600" />
         </div>
       </div>
 
