@@ -38,13 +38,13 @@ function SportCard({ emoji, name, nicoScore, alanScore, subtitle }: {
       </div>
       <div className="flex justify-between items-center">
         <div className="text-center flex-1">
-          <div className={`text-3xl font-black drop-shadow ${nicoLeads ? 'text-green-400' : 'text-gray-500'}`}>{nicoScore}</div>
-          <div className={`text-xs mt-0.5 ${nicoLeads ? 'text-green-400' : 'text-gray-500'}`}>{nicoLeads ? '👑 Nico' : 'Nico'}</div>
+          <div className={`text-3xl font-black drop-shadow ${nicoLeads ? 'text-green-400' : 'text-gray-300'}`}>{nicoScore}</div>
+          <div className={`text-xs mt-0.5 ${nicoLeads ? 'text-green-400' : 'text-gray-300'}`}>{nicoLeads ? '👑 Nico' : 'Nico'}</div>
         </div>
         <div className="text-white/20 text-xl font-thin">—</div>
         <div className="text-center flex-1">
-          <div className={`text-3xl font-black drop-shadow ${alanLeads ? 'text-sky-300' : 'text-gray-500'}`}>{alanScore}</div>
-          <div className={`text-xs mt-0.5 ${alanLeads ? 'text-sky-300' : 'text-gray-500'}`}>{alanLeads ? '👑 Alan' : 'Alan'}</div>
+          <div className={`text-3xl font-black drop-shadow ${alanLeads ? 'text-sky-300' : 'text-gray-300'}`}>{alanScore}</div>
+          <div className={`text-xs mt-0.5 ${alanLeads ? 'text-sky-300' : 'text-gray-300'}`}>{alanLeads ? '👑 Alan' : 'Alan'}</div>
         </div>
       </div>
     </div>
