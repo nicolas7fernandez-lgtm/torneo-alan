@@ -21,7 +21,15 @@ const VIEWS: Record<Sport, React.ReactElement> = {
 export default function App() {
   const [sport, setSport] = useState<Sport>('home');
   const [splashDone, setSplashDone] = useState(false);
+  const [currentUser, setCurrentUser] = useState<'nico' | 'alan'>(
+    () => (localStorage.getItem('torneo-user') as 'nico' | 'alan') ?? 'nico'
+  );
   const { muted, toggle, start } = useBackgroundMusic('/Furious Angels - Rob Dougan Matrix Reloaded (1).mp3');
+
+  const switchUser = (u: 'nico' | 'alan') => {
+    setCurrentUser(u);
+    localStorage.setItem('torneo-user', u);
+  };
 
   return (
     <div className="min-h-screen text-white relative">
@@ -33,6 +41,22 @@ export default function App() {
       <div className="fixed inset-0 bg-black/35 -z-10" />
 
       <NamePrompt />
+
+      {/* Current user toggle — top left */}
+      <div className="fixed top-3 left-3 z-40 flex rounded-full bg-black/50 border border-white/10 backdrop-blur overflow-hidden text-xs font-bold">
+        <button
+          onClick={() => switchUser('nico')}
+          className={`px-3 py-1.5 transition-colors active:opacity-70 ${currentUser === 'nico' ? 'bg-violet-700 text-white' : 'text-gray-400'}`}
+        >
+          Nico
+        </button>
+        <button
+          onClick={() => switchUser('alan')}
+          className={`px-3 py-1.5 transition-colors active:opacity-70 ${currentUser === 'alan' ? 'bg-sky-700 text-white' : 'text-gray-400'}`}
+        >
+          Alan
+        </button>
+      </div>
 
       <button
         onClick={toggle}
