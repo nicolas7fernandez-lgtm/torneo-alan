@@ -1,12 +1,14 @@
 import { db, doc, updateDoc } from '../lib/firebase';
 import { logHistory } from '../lib/history';
 import { useAoe } from '../hooks/useScores';
+import { playScoreSound } from '../hooks/useScoreSound';
 import ChangeHistory from './ChangeHistory';
 import type { Player } from '../types';
 
 const FECHAS_PER_TORNEO = 50;
 
 async function addPoint(player: Player, data: ReturnType<typeof useAoe>) {
+  playScoreSound(player);
   const ref = doc(db, 'scores', 'aoe');
   const newFechas = { ...data.fechas, [player]: data.fechas[player] + 1 };
   const newTorneos = { ...data.torneos };

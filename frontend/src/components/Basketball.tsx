@@ -1,6 +1,7 @@
 import { db, doc, updateDoc } from '../lib/firebase';
 import { logHistory } from '../lib/history';
 import { useBasketball } from '../hooks/useScores';
+import { playScoreSound } from '../hooks/useScoreSound';
 import ChangeHistory from './ChangeHistory';
 import type { Player } from '../types';
 
@@ -8,6 +9,7 @@ const PARTIDOS_PER_FECHA = 7;
 const FECHAS_PER_TORNEO = 10;
 
 async function addPartido(player: Player, data: ReturnType<typeof useBasketball>) {
+  playScoreSound(player);
   const ref = doc(db, 'scores', 'basketball');
   const newFecha = { ...data.fechaActual, [player]: data.fechaActual[player] + 1 };
   const newTorneoActual = { ...data.torneoActual };

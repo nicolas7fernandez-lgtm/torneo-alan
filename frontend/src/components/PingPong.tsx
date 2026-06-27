@@ -1,10 +1,12 @@
 import { db, doc, increment, updateDoc } from '../lib/firebase';
 import { logHistory } from '../lib/history';
 import { usePingPong } from '../hooks/useScores';
+import { playScoreSound } from '../hooks/useScoreSound';
 import ChangeHistory from './ChangeHistory';
 import type { Player } from '../types';
 
 async function addPoint(player: Player) {
+  playScoreSound(player);
   await updateDoc(doc(db, 'scores', 'pingpong'), { [`fechas.${player}`]: increment(1) });
   await logHistory('pingpong', `+1 fecha para ${player}`);
 }

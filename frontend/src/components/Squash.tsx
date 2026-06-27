@@ -1,12 +1,14 @@
 import { db, doc, updateDoc, increment } from '../lib/firebase';
 import { logHistory } from '../lib/history';
 import { useSquash } from '../hooks/useScores';
+import { playScoreSound } from '../hooks/useScoreSound';
 import ChangeHistory from './ChangeHistory';
 import type { Player } from '../types';
 
 const FECHAS_PER_TORNEO = 10;
 
 async function addPoint(player: Player, data: ReturnType<typeof useSquash>) {
+  playScoreSound(player);
   const ref = doc(db, 'scores', 'squash');
   const newFechas = { ...data.fechas, [player]: data.fechas[player] + 1 };
   const newTorneos = { ...data.torneos };
