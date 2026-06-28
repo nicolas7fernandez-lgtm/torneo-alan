@@ -12,6 +12,8 @@ import {
   query,
   orderBy,
   limit,
+  where,
+  Timestamp,
 } from 'firebase/firestore';
 
 const firebaseConfig = {
@@ -26,4 +28,4 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 export const db = getFirestore(app);
 
-export { doc, updateDoc, onSnapshot, setDoc, increment, addDoc, collection, serverTimestamp, query, orderBy, limit };
+export { doc, updateDoc, onSnapshot, setDoc, increment, addDoc, collection, serverTimestamp, query, orderBy, limit, where, Timestamp };

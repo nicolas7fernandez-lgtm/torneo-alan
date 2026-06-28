@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useBasketball, useSquash, useAoe, usePingPong, useTodayActivity } from '../hooks/useScores';
 import type { SportSummary } from '../hooks/useScores';
+import TrendChart from './TrendChart';
 import Quejas from './Quejas';
 
 function formatNet(net: number): string {
@@ -104,6 +105,8 @@ export default function Home() {
           </div>
         )}
       </div>
+
+      <TrendChart />
 
       {/* Totals */}
       <div className="bg-black/45 backdrop-blur-md rounded-2xl p-4 flex justify-around items-center border border-white/10">
