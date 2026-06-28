@@ -79,24 +79,38 @@ export default function Home() {
 
   return (
     <div className="space-y-4 p-4">
-      {/* Champion banner */}
-      <div className="bg-black/50 backdrop-blur-md rounded-2xl p-5 text-center border border-white/10">
-        <div className="text-xs text-green-500/50 uppercase tracking-[0.2em] mb-1">The Chosen One</div>
-        {champion ? (
-          <>
-            <div className="text-5xl mb-1">👑</div>
-            <div className={`text-4xl font-black tracking-tight drop-shadow ${champColor}`}>{champion}</div>
-            <div className="text-xs text-green-500/40 mt-2">
-              lidera {nicoWins > alanWins ? nicoWins : alanWins} de {sports.length} deportes
-            </div>
-          </>
-        ) : (
-          <>
-            <div className="text-5xl mb-1">🤝</div>
-            <div className="text-3xl font-black text-yellow-400 drop-shadow">EMPATE</div>
-            <div className="text-xs text-green-500/40 mt-2">{nicoWins} — {alanWins} deportes</div>
-          </>
-        )}
+
+      {/* Champion banner — merged with sport wins totals */}
+      <div className="bg-black/50 backdrop-blur-md rounded-2xl p-5 border border-white/10">
+        <div className="text-center">
+          <div className="text-xs text-green-500/50 uppercase tracking-[0.2em] mb-2">The Chosen One</div>
+          {champion ? (
+            <>
+              <div className="text-5xl mb-1">👑</div>
+              <div className={`text-4xl font-black tracking-tight drop-shadow ${champColor}`}>{champion}</div>
+            </>
+          ) : (
+            <>
+              <div className="text-5xl mb-1">🤝</div>
+              <div className="text-3xl font-black text-yellow-400 drop-shadow">EMPATE</div>
+            </>
+          )}
+        </div>
+
+        {/* Sport wins side by side */}
+        <div className="flex justify-around items-center mt-4 pt-4 border-t border-white/10">
+          <div className="text-center">
+            <div className="text-3xl font-black text-violet-300 drop-shadow">{nicoWins}</div>
+            <div className="text-xs text-gray-400 mt-0.5">Nico</div>
+            <div className="text-xs text-green-500/40">deportes ganados</div>
+          </div>
+          <div className="text-white/20 text-2xl">🏆</div>
+          <div className="text-center">
+            <div className="text-3xl font-black text-sky-300 drop-shadow">{alanWins}</div>
+            <div className="text-xs text-gray-400 mt-0.5">Alan</div>
+            <div className="text-xs text-sky-400/40">deportes ganados</div>
+          </div>
+        </div>
 
         {todayActivity.length > 0 && (
           <div className="mt-4 pt-4 border-t border-white/10 text-left space-y-1.5">
@@ -108,25 +122,13 @@ export default function Home() {
 
       <TrendChart />
 
-      {/* Totals */}
-      <div className="bg-black/45 backdrop-blur-md rounded-2xl p-4 flex justify-around items-center border border-white/10">
-        <div className="text-center">
-          <div className="text-3xl font-black text-green-400 drop-shadow">{nicoWins}</div>
-          <div className="text-xs text-gray-300">Nico</div>
-          <div className="text-xs text-green-500/50">deportes ganados</div>
-        </div>
-        <div className="text-white/30 text-2xl">🏆</div>
-        <div className="text-center">
-          <div className="text-3xl font-black text-sky-300 drop-shadow">{alanWins}</div>
-          <div className="text-xs text-gray-300">Alan</div>
-          <div className="text-xs text-sky-400/50">deportes ganados</div>
-        </div>
-      </div>
+      {/* Sport breakdown */}
+      <div className="text-xs text-green-500/40 uppercase tracking-widest px-1">Desglose por deporte</div>
 
-      <SportCard emoji="🏀" name="Básquet" nicoScore={bball.torneosPrevios.nico} alanScore={bball.torneosPrevios.alan} subtitle="torneos" />
-      <SportCard emoji="🎾" name="Squash" nicoScore={squash.torneos.nico} alanScore={squash.torneos.alan} subtitle="torneos" />
-      <SportCard emoji="⚔️" name="Age of Empires" nicoScore={aoe.torneos.nico} alanScore={aoe.torneos.alan} subtitle={`torneos · ${aoe.fechas.nico}—${aoe.fechas.alan} fechas`} />
-      <SportCard emoji="🏓" name="Ping Pong" nicoScore={pp.fechas.nico} alanScore={pp.fechas.alan} subtitle="fechas" />
+      <SportCard emoji="🏀" name="Básquet"        nicoScore={bball.torneosPrevios.nico} alanScore={bball.torneosPrevios.alan} subtitle="torneos" />
+      <SportCard emoji="🎾" name="Squash"          nicoScore={squash.torneos.nico}       alanScore={squash.torneos.alan}       subtitle="torneos" />
+      <SportCard emoji="⚔️" name="Age of Empires"  nicoScore={aoe.torneos.nico}          alanScore={aoe.torneos.alan}          subtitle={`torneos · ${aoe.fechas.nico}—${aoe.fechas.alan} fechas`} />
+      <SportCard emoji="🏓" name="Ping Pong"       nicoScore={pp.fechas.nico}            alanScore={pp.fechas.alan}            subtitle="fechas" />
 
       <Quejas />
     </div>
