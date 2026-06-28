@@ -9,7 +9,7 @@ Object.values(preloaded).forEach(a => { a.volume = 0.9; });
 // Row = current user (who's pressing), col = who scored
 const MATRIX: Record<string, Record<string, string>> = {
   nico: { nico: '/bien-papa.ogg',    alan: '/te-entro.ogg' },
-  alan: { nico: '/pavo-navidad.ogg', alan: '/bien-tigre.ogg' },
+  alan: { nico: '/bien-tigre.ogg',   alan: '/pavo-navidad.ogg' },
 };
 
 export function playScoreSound(scoredPlayer: 'nico' | 'alan') {
