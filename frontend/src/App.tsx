@@ -22,9 +22,7 @@ const VIEWS: Record<Sport, React.ReactElement> = {
 export default function App() {
   const [sport, setSport] = useState<Sport>('home');
   const [splashDone, setSplashDone] = useState(false);
-  const [currentUser, setCurrentUser] = useState<'nico' | 'alan' | null>(
-    () => localStorage.getItem('torneo-user') as 'nico' | 'alan' | null
-  );
+  const [currentUser, setCurrentUser] = useState<'nico' | 'alan' | null>(null);
   const { muted, toggle, start } = useBackgroundMusic('/Furious Angels - Rob Dougan Matrix Reloaded (1).mp3');
 
   const switchUser = (u: 'nico' | 'alan') => {
