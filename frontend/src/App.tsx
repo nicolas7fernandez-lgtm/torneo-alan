@@ -7,6 +7,7 @@ import AgeOfEmpires from './components/AgeOfEmpires';
 import PingPong from './components/PingPong';
 import NamePrompt from './components/NamePrompt';
 import SplashScreen from './components/SplashScreen';
+import PlayerSelect from './components/PlayerSelect';
 import { useBackgroundMusic } from './hooks/useBackgroundMusic';
 import type { Sport } from './types';
 
@@ -21,8 +22,8 @@ const VIEWS: Record<Sport, React.ReactElement> = {
 export default function App() {
   const [sport, setSport] = useState<Sport>('home');
   const [splashDone, setSplashDone] = useState(false);
-  const [currentUser, setCurrentUser] = useState<'nico' | 'alan'>(
-    () => (localStorage.getItem('torneo-user') as 'nico' | 'alan') ?? 'nico'
+  const [currentUser, setCurrentUser] = useState<'nico' | 'alan' | null>(
+    () => localStorage.getItem('torneo-user') as 'nico' | 'alan' | null
   );
   const { muted, toggle, start } = useBackgroundMusic('/Furious Angels - Rob Dougan Matrix Reloaded (1).mp3');
 
@@ -46,13 +47,13 @@ export default function App() {
       <div className="fixed top-3 left-3 z-40 flex rounded-full bg-black/50 border border-white/10 backdrop-blur overflow-hidden text-xs font-bold">
         <button
           onClick={() => switchUser('nico')}
-          className={`px-3 py-1.5 transition-colors active:opacity-70 ${currentUser === 'nico' ? 'bg-violet-700 text-white' : 'text-gray-400'}`}
+          className={`px-3 py-1.5 transition-colors active:opacity-70 ${currentUser === 'nico' ? 'bg-violet-700 text-white' : 'text-gray-500'}`}
         >
           Nico
         </button>
         <button
           onClick={() => switchUser('alan')}
-          className={`px-3 py-1.5 transition-colors active:opacity-70 ${currentUser === 'alan' ? 'bg-sky-700 text-white' : 'text-gray-400'}`}
+          className={`px-3 py-1.5 transition-colors active:opacity-70 ${currentUser === 'alan' ? 'bg-sky-700 text-white' : 'text-gray-500'}`}
         >
           Alan
         </button>
@@ -81,6 +82,10 @@ export default function App() {
           onEnter={start}
           onDone={() => setSplashDone(true)}
         />
+      )}
+
+      {!currentUser && (
+        <PlayerSelect onSelect={switchUser} />
       )}
     </div>
   );
